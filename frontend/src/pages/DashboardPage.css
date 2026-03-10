@@ -1,0 +1,221 @@
+.dashboard {
+  padding: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Hero */
+.dash-hero {
+  margin-bottom: 32px;
+}
+
+.dash-hero h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.dash-hero-sub {
+  font-size: 1rem;
+  color: #999;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 700px;
+}
+
+.dash-hero-sub strong {
+  color: #ccc;
+}
+
+/* Forecast Hero Card */
+.dash-forecast-hero {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  background: linear-gradient(135deg, #0f1a12 0%, #111a1f 100%);
+  border: 1px solid #1a3a2a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+}
+
+.forecast-accuracy-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+}
+
+.forecast-accuracy-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+.accuracy-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.accuracy-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #34d399;
+  line-height: 1.1;
+}
+
+.accuracy-label {
+  font-size: 0.65rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.forecast-hero-details h2 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+.forecast-hero-details p {
+  font-size: 0.85rem;
+  color: #999;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.forecast-hero-details strong {
+  color: #34d399;
+}
+
+.forecast-hero-metrics {
+  display: flex;
+  gap: 28px;
+}
+
+.fh-metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.fh-value {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.fh-label {
+  font-size: 0.7rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* KPI Grid */
+.dash-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.kpi-card {
+  background: #1a1d23;
+  border: 1px solid #2a2d35;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.kpi-card:hover {
+  border-color: #60a5fa;
+  transform: translateY(-2px);
+}
+
+.kpi-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-bottom: 4px;
+}
+
+.kpi-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #ccc;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.kpi-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: #777;
+  line-height: 1.4;
+}
+
+/* Pipeline */
+.dash-pipeline {
+  margin-top: 8px;
+}
+
+.dash-pipeline h2 {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  margin: 0 0 16px;
+}
+
+.pipeline-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.pipeline-step {
+  background: #1a1d23;
+  border: 1px solid #2a2d35;
+  border-radius: 10px;
+  padding: 20px 16px;
+}
+
+.step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #60a5fa;
+  color: #111;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.pipeline-step h3 {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+  margin: 0 0 6px;
+}
+
+.pipeline-step p {
+  font-size: 0.78rem;
+  color: #888;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+}

@@ -1,0 +1,15 @@
+raw/
+data/*.duckdb
+data/*.duckdb.wal
+data/models/
+data/reports/
+data/victorian_traffic_signals.csv
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+dist/
+*.egg-info/
+.ruff_cache/
+frontend/node_modules/
+frontend/dist/

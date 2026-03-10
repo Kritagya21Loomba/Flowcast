@@ -1,0 +1,309 @@
+.correlations-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.correlations-page h2 {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  color: #e0e0e0;
+}
+
+.page-desc {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0 0 20px;
+  max-width: 720px;
+  line-height: 1.5;
+}
+
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+}
+
+/* Controls bar */
+.corr-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-label {
+  font-size: 0.7rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slider-row input[type="range"] {
+  width: 140px;
+  accent-color: #60a5fa;
+}
+
+.slider-value {
+  font-size: 0.85rem;
+  color: #60a5fa;
+  font-weight: 600;
+  min-width: 32px;
+}
+
+.corr-controls select {
+  background: #1a1d23;
+  color: #e0e0e0;
+  border: 1px solid #2a2d35;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+
+/* KPIs inline */
+.corr-kpis {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1a1d23;
+  border: 1px solid #2a2d35;
+  border-radius: 6px;
+  padding: 6px 12px;
+  min-width: 56px;
+}
+
+.kpi-val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  line-height: 1.2;
+}
+
+.kpi-lbl {
+  font-size: 0.58rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Viz row */
+.corr-viz-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.viz-card {
+  background: #1a1d23;
+  border: 1px solid #2a2d35;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.viz-card h3 {
+  margin: 0 0 2px;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+
+.viz-sub {
+  margin: 0 0 12px;
+  font-size: 0.72rem;
+  color: #777;
+}
+
+/* Map card */
+.corr-map-card {
+  padding: 20px 20px 16px;
+}
+
+.corr-map-wrap {
+  height: 340px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Map popup */
+.corr-popup .maplibregl-popup-content {
+  background: #1a1d23;
+  color: #e0e0e0;
+  border: 1px solid #2a2d35;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.corr-popup .maplibregl-popup-tip {
+  border-top-color: #1a1d23;
+}
+
+.corr-popup-content strong {
+  color: #60a5fa;
+}
+
+.corr-popup-content div {
+  color: #bbb;
+  font-size: 0.72rem;
+  margin-top: 2px;
+}
+
+.corr-popup-content b {
+  color: #e0e0e0;
+}
+
+/* Map strength legend */
+.map-strength-legend {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(26, 29, 35, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid #2a2d35;
+  border-radius: 6px;
+  padding: 8px 10px;
+  z-index: 5;
+}
+
+.map-strength-legend .legend-title {
+  font-size: 0.62rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.strength-bar {
+  height: 6px;
+  width: 100px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #facc15, #a78bfa, #60a5fa, #34d399);
+}
+
+.strength-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.58rem;
+  color: #888;
+  margin-top: 2px;
+  width: 100px;
+}
+
+/* Section title */
+.section-title {
+  font-size: 1rem;
+  color: #ccc;
+  margin: 0 0 12px;
+}
+
+/* Table */
+.corr-table-wrapper {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid #2a2d35;
+}
+
+.corr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.corr-table th {
+  text-align: left;
+  padding: 10px 14px;
+  color: #999;
+  font-weight: 500;
+  border-bottom: 1px solid #2a2d35;
+  position: sticky;
+  top: 0;
+  background: #1a1d23;
+  z-index: 1;
+}
+
+.corr-table td {
+  padding: 8px 14px;
+  color: #ccc;
+  border-bottom: 1px solid #1e2028;
+}
+
+.corr-table tr:hover td,
+.corr-table tr.row-hovered td {
+  background: #1e2230;
+}
+
+.td-site {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #60a5fa;
+}
+
+/* Strength badge */
+.strength-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border: 1px solid;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* Bar cell for Pearson/Cosine */
+.bar-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 22px;
+}
+
+.bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  opacity: 0.2;
+}
+
+.bar-text {
+  position: relative;
+  z-index: 1;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+}
+
+/* Lag */
+.td-lag {
+  font-variant-numeric: tabular-nums;
+}
+
+.no-lag {
+  color: #555;
+  font-style: italic;
+  font-size: 0.75rem;
+}
