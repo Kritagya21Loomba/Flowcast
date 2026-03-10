@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: flowcast
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: DUCKDB_MEMORY_LIMIT
+        value: "256MB"
+      - key: DUCKDB_THREADS
+        value: "2"

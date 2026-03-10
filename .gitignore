@@ -13,3 +13,6 @@ dist/
 .ruff_cache/
 frontend/node_modules/
 frontend/dist/
+
+# Deploy DB is committed (lightweight, ~3 MB)
+!deploy/
