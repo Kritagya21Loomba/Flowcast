@@ -13,7 +13,10 @@ WORKDIR /app
 # Install Python dependencies (API group only — no ML libs needed)
 COPY pyproject.toml ./
 COPY src/ src/
-RUN pip install --no-cache-dir .[api]
+RUN pip install --no-cache-dir duckdb structlog fastapi uvicorn pydantic
+
+# Use PYTHONPATH so PROJECT_ROOT resolves to /app/ (not site-packages)
+ENV PYTHONPATH=/app/src
 
 # Copy deploy database into the standard data/ location
 COPY deploy/flowcast.duckdb data/flowcast.duckdb
