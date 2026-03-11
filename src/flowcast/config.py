@@ -27,8 +27,8 @@ DEFAULT_TEST_START_DATE = "2025-10-01"
 DEFAULT_MIN_HISTORY_DAYS = 365
 
 # DuckDB settings
-DUCKDB_MEMORY_LIMIT = os.environ.get("DUCKDB_MEMORY_LIMIT", "4GB")
-DUCKDB_THREADS = int(os.environ.get("DUCKDB_THREADS", "4"))
+DUCKDB_MEMORY_LIMIT = os.environ.get("DUCKDB_MEMORY_LIMIT", "256MB")
+DUCKDB_THREADS = int(os.environ.get("DUCKDB_THREADS", "2"))
 
 # Expected CSV schema — the 103 columns found in VSDATA files
 V_COLUMNS = [f"V{i:02d}" for i in range(96)]
