@@ -27,7 +27,7 @@ COPY --from=frontend /app/frontend/dist frontend/dist
 # Copy server script
 COPY scripts/serve.py scripts/serve.py
 
-EXPOSE 8000
+EXPOSE 7860
 
-# Render sets PORT env var; shell form expands it
-CMD sh -c "python scripts/serve.py --port ${PORT:-8000}"
+# HF Spaces uses port 7860; Render sets PORT env var
+CMD sh -c "python scripts/serve.py --port ${PORT:-7860}"
