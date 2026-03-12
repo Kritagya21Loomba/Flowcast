@@ -1,6 +1,7 @@
 // React Query hooks for all API endpoints
 
 import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 import fetchJson from './client'
 import type {
   OverviewStats,
@@ -61,15 +62,23 @@ export function useClusterDetail(clusterId: number) {
 }
 
 export function useCorrelations(minPearson = 0.8, limit = 200, siteId?: number) {
-  const params = new URLSearchParams({
-    min_pearson: String(minPearson),
-    limit: String(limit),
+  // In static mode, we fetch all correlations and filter client-side
+  const { data: rawData, ...rest } = useQuery({
+    queryKey: ['correlations-raw'],
+    queryFn: () => fetchJson<CorrelationResponse>('/correlations'),
   })
-  if (siteId !== undefined) params.set('site_id', String(siteId))
-  return useQuery({
-    queryKey: ['correlations', minPearson, limit, siteId],
-    queryFn: () => fetchJson<CorrelationResponse>(`/correlations?${params}`),
-  })
+
+  const data = useMemo(() => {
+    if (!rawData) return undefined
+    let pairs = rawData.pairs.filter(p => p.pearson_daily >= minPearson)
+    if (siteId !== undefined) {
+      pairs = pairs.filter(p => p.site_a === siteId || p.site_b === siteId)
+    }
+    pairs = pairs.slice(0, limit)
+    return { pairs, count: pairs.length }
+  }, [rawData, minPearson, limit, siteId])
+
+  return { data, ...rest }
 }
 
 export function useModels() {
@@ -80,10 +89,22 @@ export function useModels() {
 }
 
 export function useModelSiteMetrics(modelId: string, sortBy = 'mae', limit = 50) {
-  return useQuery({
-    queryKey: ['model-sites', modelId, sortBy, limit],
-    queryFn: () =>
-      fetchJson<SiteMetric[]>(`/models/${modelId}/sites?sort_by=${sortBy}&limit=${limit}`),
+  // In static mode, we fetch all metrics and sort/limit client-side
+  const { data: rawData, ...rest } = useQuery({
+    queryKey: ['model-sites-raw', modelId],
+    queryFn: () => fetchJson<SiteMetric[]>(`/models/${modelId}/sites`),
     enabled: !!modelId,
   })
+
+  const data = useMemo(() => {
+    if (!rawData) return undefined
+    const sorted = [...rawData].sort((a, b) => {
+      const av = a[sortBy as keyof SiteMetric] as number ?? 0
+      const bv = b[sortBy as keyof SiteMetric] as number ?? 0
+      return av - bv
+    })
+    return sorted.slice(0, limit)
+  }, [rawData, sortBy, limit])
+
+  return { data, ...rest }
 }
