@@ -65,23 +65,31 @@ def export_static():
             save(f"models/{mid}/sites.json", r.json())
 
     # 8. Per-site detail + forecasts for ALL sites with coordinates
+    #    Skip files that already exist to allow resuming after crashes.
     site_ids_with_coords = []
     for s in sites_data.get("sites", []):
         if s.get("latitude") is not None:
             site_ids_with_coords.append(s["site_id"])
 
     total = len(site_ids_with_coords)
+    skipped = 0
     for i, site_id in enumerate(sorted(site_ids_with_coords), 1):
-        if i % 200 == 0 or i == total:
-            log.info("sites progress", done=i, total=total)
+        if i % 500 == 0 or i == total:
+            log.info("sites progress", done=i, total=total, skipped=skipped)
 
-        r = client.get(f"/api/sites/{site_id}?days=90")
-        if r.status_code == 200:
-            save(f"sites/{site_id}.json", r.json())
+        detail_path = out / f"sites/{site_id}.json"
+        if not detail_path.exists():
+            r = client.get(f"/api/sites/{site_id}?days=90")
+            if r.status_code == 200:
+                save(f"sites/{site_id}.json", r.json())
+        else:
+            skipped += 1
 
-        r = client.get(f"/api/sites/{site_id}/forecasts")
-        if r.status_code == 200:
-            save(f"forecasts/{site_id}.json", r.json())
+        forecast_path = out / f"sites/{site_id}/forecasts.json"
+        if not forecast_path.exists():
+            r = client.get(f"/api/sites/{site_id}/forecasts")
+            if r.status_code == 200:
+                save(f"sites/{site_id}/forecasts.json", r.json())
 
     log.info("static export complete", total_sites=total)
 
