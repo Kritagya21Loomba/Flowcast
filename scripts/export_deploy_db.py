@@ -59,7 +59,7 @@ def export_deploy_db(
         log.info("exporting table", table=table, rows=count)
         dst.execute(f"CREATE TABLE {table} AS SELECT * FROM src.{table}")
 
-    # Export traffic_daily — limited to modelled sites and recent data
+    # Export traffic_daily — ALL sites, last 6 months
     max_date = dst.execute("SELECT MAX(date) FROM src.traffic_daily").fetchone()[0]
     if max_date:
         cutoff = f"DATE '{max_date}' - INTERVAL 180 DAY"
@@ -68,16 +68,14 @@ def export_deploy_db(
 
     td_count = dst.execute(f"""
         SELECT COUNT(*) FROM src.traffic_daily
-        WHERE site_id IN (SELECT DISTINCT site_id FROM src.site_clusters)
-          AND date >= ({cutoff})
+        WHERE date >= ({cutoff})
     """).fetchone()[0]
     log.info("exporting table", table="traffic_daily", rows=td_count)
 
     dst.execute(f"""
         CREATE TABLE traffic_daily AS
         SELECT * FROM src.traffic_daily
-        WHERE site_id IN (SELECT DISTINCT site_id FROM src.site_clusters)
-          AND date >= ({cutoff})
+        WHERE date >= ({cutoff})
     """)
 
     # Detach source, checkpoint, and close

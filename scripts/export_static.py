@@ -64,15 +64,15 @@ def export_static():
         if r.status_code == 200:
             save(f"models/{mid}/sites.json", r.json())
 
-    # 8. Per-site detail + forecasts (only for modelled sites)
-    modelled_site_ids = set()
+    # 8. Per-site detail + forecasts for ALL sites with coordinates
+    site_ids_with_coords = []
     for s in sites_data.get("sites", []):
-        if s.get("cluster_id") is not None:
-            modelled_site_ids.add(s["site_id"])
+        if s.get("latitude") is not None:
+            site_ids_with_coords.append(s["site_id"])
 
-    total = len(modelled_site_ids)
-    for i, site_id in enumerate(sorted(modelled_site_ids), 1):
-        if i % 50 == 0 or i == total:
+    total = len(site_ids_with_coords)
+    for i, site_id in enumerate(sorted(site_ids_with_coords), 1):
+        if i % 200 == 0 or i == total:
             log.info("sites progress", done=i, total=total)
 
         r = client.get(f"/api/sites/{site_id}?days=90")

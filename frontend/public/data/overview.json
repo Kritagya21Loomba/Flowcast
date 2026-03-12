@@ -1,1 +1,1 @@
-{"total_sites": 4741, "sites_with_coords": 4449, "clustered_sites": 500, "total_daily_rows": 90000, "date_range_start": "2025-09-10", "date_range_end": "2026-03-09", "total_forecasts": 8000, "model_count": 4, "best_model_mape": 3.897397518157959, "correlation_pairs": 59461}
+{"total_sites": 4741, "sites_with_coords": 4449, "clustered_sites": 500, "total_daily_rows": 844717, "date_range_start": "2025-09-10", "date_range_end": "2026-03-09", "total_forecasts": 8000, "model_count": 4, "best_model_mape": 3.897397518157959, "correlation_pairs": 59461}
