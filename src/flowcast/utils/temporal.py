@@ -48,6 +48,10 @@ def zip_to_year_month(name: str) -> str:
             year_match = re.search(r"(\d{4})", stem)
             if year_match:
                 return f"{year_match.group(1)}-{month_num}"
+    # Try compact monthly pattern: ..._YYYYMM.zip
+    ym_match = re.search(r"_(\d{4})(\d{2})", stem)
+    if ym_match:
+        return f"{ym_match.group(1)}-{ym_match.group(2)}"
     # Try yearly pattern: ..._YYYY.zip
     year_match = re.search(r"_(\d{4})", stem)
     if year_match:

@@ -78,6 +78,8 @@ def test_pipeline_idempotent(pipeline_env):
     con = duckdb.connect(str(db_path))
     vol_count = con.execute("SELECT COUNT(*) FROM traffic_volumes").fetchone()[0]
     assert vol_count == 6
+    health_rows = con.execute("SELECT COUNT(*) FROM detector_health_daily").fetchone()[0]
+    assert health_rows >= 0
     con.close()
 
 

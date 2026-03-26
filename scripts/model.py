@@ -88,7 +88,7 @@ def main() -> None:
         if "train" in args.steps:
             from flowcast.modelling.train import (
                 train_daily_global_model, save_model,
-                register_model, store_site_metrics,
+                register_model, store_site_metrics, serialize_component_models,
             )
             if not site_ids:
                 log.error("train_requires_select")
@@ -121,6 +121,7 @@ def main() -> None:
                 train_result.model_id,
                 site_ids,
                 train_result.feature_columns,
+                model_bundle={"component_models": serialize_component_models(train_result.component_models)},
             )
             log.info("step_complete", step="forecast", rows=count)
 
@@ -129,6 +130,7 @@ def main() -> None:
             from flowcast.modelling.od_inference import (
                 compute_daily_correlations, compute_hourly_profile_similarity,
                 build_correlation_network, store_correlations,
+                compute_graph_features, store_graph_features,
             )
             from flowcast.modelling.clusters import compute_site_hourly_profiles as _get_profiles
             if not site_ids:
@@ -146,6 +148,8 @@ def main() -> None:
             hourly_sim = compute_hourly_profile_similarity(profiles, ordered_ids)
             network = build_correlation_network(daily_corr, hourly_sim)
             store_correlations(con, network)
+            graph_df = compute_graph_features(network)
+            store_graph_features(con, graph_df)
             log.info("step_complete", step="od", correlated_pairs=len(network))
 
         # --- Step 6: Evaluation Report ---

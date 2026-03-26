@@ -62,6 +62,10 @@ def test_train_site_metrics(train_db):
     )
     assert len(result.site_metrics) > 0
     assert set(result.site_metrics.columns) >= {"site_id", "mae", "rmse", "mape", "n_test_days"}
+    assert "rolling_cv_mape_mean" in result.cv_metrics or result.cv_metrics == {}
+    assert set(result.residual_diagnostics.columns) >= {
+        "model_id", "site_id", "residual_mean", "residual_std", "residual_mape", "flagged", "reason"
+    }
 
 
 def test_save_and_load_model(train_db, tmp_path):

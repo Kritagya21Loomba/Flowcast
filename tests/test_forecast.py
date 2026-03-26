@@ -6,7 +6,7 @@ import duckdb
 import pytest
 
 from flowcast.db.schema import ensure_schema
-from flowcast.modelling.train import train_daily_global_model
+from flowcast.modelling.train import train_daily_global_model, serialize_component_models
 from flowcast.modelling.forecast import generate_forecasts, backfill_actuals
 
 
@@ -47,6 +47,7 @@ def test_generate_forecasts(forecast_db):
         [10, 20],
         result.feature_columns,
         horizons=[1, 7],
+        model_bundle={"component_models": serialize_component_models(result.component_models)},
     )
     assert count > 0
 
@@ -76,6 +77,7 @@ def test_forecast_horizons(forecast_db):
         [10],
         result.feature_columns,
         horizons=horizons,
+        model_bundle={"component_models": serialize_component_models(result.component_models)},
     )
     # 1 site × 3 horizons
     assert count == 3
@@ -102,6 +104,7 @@ def test_backfill_actuals(forecast_db):
         result.feature_columns,
         horizons=[1],
         as_of_date="2024-04-01",
+        model_bundle={"component_models": serialize_component_models(result.component_models)},
     )
 
     # Before backfill: actual_volume should be NULL

@@ -84,6 +84,27 @@ def add_holiday_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["is_public_holiday"] = dates.map(lambda d: 1 if d in pub_holidays else 0).astype("int8")
     df["is_school_holiday"] = dates.map(lambda d: 1 if d in school_holidays else 0).astype("int8")
+    df["is_day_before_public_holiday"] = dates.map(
+        lambda d: 1 if date.fromordinal(d.toordinal() + 1) in pub_holidays else 0
+    ).astype("int8")
+    df["is_day_after_public_holiday"] = dates.map(
+        lambda d: 1 if date.fromordinal(d.toordinal() - 1) in pub_holidays else 0
+    ).astype("int8")
+    df["is_bridge_day"] = dates.map(
+        lambda d: 1
+        if (d.weekday() == 0 and date.fromordinal(d.toordinal() - 3) in pub_holidays)
+        or (d.weekday() == 4 and date.fromordinal(d.toordinal() + 3) in pub_holidays)
+        else 0
+    ).astype("int8")
+
+    term_starts = {date.fromordinal(end.toordinal() + 1) for _, end in _SCHOOL_HOLIDAYS_VIC}
+    term_ends = {date.fromordinal(start.toordinal() - 1) for start, _ in _SCHOOL_HOLIDAYS_VIC}
+    df["is_term_start_week"] = dates.map(
+        lambda d: 1 if any(0 <= (d - ts).days <= 6 for ts in term_starts if ts.year == d.year) else 0
+    ).astype("int8")
+    df["is_term_end_week"] = dates.map(
+        lambda d: 1 if any(0 <= (d - te).days <= 6 for te in term_ends if te.year == d.year) else 0
+    ).astype("int8")
 
     log.debug("holiday_features_added", public_count=int(df["is_public_holiday"].sum()),
               school_count=int(df["is_school_holiday"].sum()), rows=len(df))

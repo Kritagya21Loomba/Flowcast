@@ -157,6 +157,62 @@ TABLES = {
             PRIMARY KEY (site_a, site_b)
         )
     """,
+    "site_weather_daily": """
+        CREATE TABLE IF NOT EXISTS site_weather_daily (
+            site_id            INTEGER NOT NULL,
+            date               DATE NOT NULL,
+            rainfall_mm        FLOAT,
+            temperature_c      FLOAT,
+            wind_kmh           FLOAT,
+            severe_weather_flag TINYINT DEFAULT 0,
+            PRIMARY KEY (site_id, date)
+        )
+    """,
+    "site_events_daily": """
+        CREATE TABLE IF NOT EXISTS site_events_daily (
+            site_id            INTEGER NOT NULL,
+            date               DATE NOT NULL,
+            afl_games_count    INTEGER DEFAULT 0,
+            concerts_count     INTEGER DEFAULT 0,
+            cbd_events_count   INTEGER DEFAULT 0,
+            roadworks_flag     TINYINT DEFAULT 0,
+            school_zone_flag   TINYINT DEFAULT 0,
+            PRIMARY KEY (site_id, date)
+        )
+    """,
+    "site_graph_features": """
+        CREATE TABLE IF NOT EXISTS site_graph_features (
+            site_id            INTEGER PRIMARY KEY,
+            degree             INTEGER DEFAULT 0,
+            weighted_degree    FLOAT DEFAULT 0,
+            centrality         FLOAT DEFAULT 0,
+            clustering_coeff   FLOAT DEFAULT 0,
+            updated_at         TIMESTAMP NOT NULL DEFAULT current_timestamp
+        )
+    """,
+    "detector_health_daily": """
+        CREATE TABLE IF NOT EXISTS detector_health_daily (
+            site_id            INTEGER NOT NULL,
+            date               DATE NOT NULL,
+            detector_count     SMALLINT,
+            zero_interval_pct  FLOAT,
+            stuck_score        FLOAT,
+            health_flag        VARCHAR,
+            PRIMARY KEY (site_id, date)
+        )
+    """,
+    "site_diagnostics": """
+        CREATE TABLE IF NOT EXISTS site_diagnostics (
+            model_id           VARCHAR NOT NULL,
+            site_id            INTEGER NOT NULL,
+            residual_mean      FLOAT,
+            residual_std       FLOAT,
+            residual_mape      FLOAT,
+            flagged            TINYINT DEFAULT 0,
+            reason             VARCHAR,
+            PRIMARY KEY (model_id, site_id)
+        )
+    """,
 }
 
 VIEWS = {

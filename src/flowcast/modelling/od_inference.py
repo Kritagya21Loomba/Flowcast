@@ -210,3 +210,80 @@ def store_correlations(
         rows,
     )
     log.info("correlations_stored", count=len(rows))
+
+
+def compute_graph_features(pairs: pd.DataFrame) -> pd.DataFrame:
+    """Compute graph-theoretic site features from correlation edges."""
+    if pairs.empty:
+        return pd.DataFrame(
+            columns=["site_id", "degree", "weighted_degree", "centrality", "clustering_coeff"]
+        )
+
+    edges = pairs.copy()
+    edges["weight"] = (
+        0.7 * edges.get("pearson_daily", 0).fillna(0)
+        + 0.3 * edges.get("cosine_hourly", 0).fillna(0)
+    )
+    nodes = sorted(set(edges["site_a"]).union(set(edges["site_b"])))
+    n = len(nodes)
+    neighbors: dict[int, set[int]] = {node: set() for node in nodes}
+    wdeg: dict[int, float] = {node: 0.0 for node in nodes}
+    for row in edges.itertuples(index=False):
+        a = int(row.site_a)
+        b = int(row.site_b)
+        neighbors[a].add(b)
+        neighbors[b].add(a)
+        w = float(row.weight)
+        wdeg[a] += w
+        wdeg[b] += w
+
+    rows = []
+    for node in nodes:
+        neigh = neighbors[node]
+        degree = len(neigh)
+        centrality = degree / max(1, n - 1)
+        if degree < 2:
+            cc = 0.0
+        else:
+            links = 0
+            neigh_list = list(neigh)
+            neigh_set = set(neigh_list)
+            for i in range(len(neigh_list)):
+                for j in range(i + 1, len(neigh_list)):
+                    a, b = neigh_list[i], neigh_list[j]
+                    if (a in neighbors and b in neighbors[a]) or (b in neighbors and a in neighbors[b]):
+                        links += 1
+            cc = (2 * links) / (degree * (degree - 1))
+        rows.append(
+            {
+                "site_id": node,
+                "degree": degree,
+                "weighted_degree": float(wdeg[node]),
+                "centrality": float(centrality),
+                "clustering_coeff": float(cc),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def store_graph_features(con: duckdb.DuckDBPyConnection, graph_df: pd.DataFrame) -> None:
+    """Persist graph feature table for downstream model features."""
+    con.execute("DELETE FROM site_graph_features")
+    if graph_df.empty:
+        return
+    con.executemany(
+        """
+        INSERT INTO site_graph_features (site_id, degree, weighted_degree, centrality, clustering_coeff)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        [
+            (
+                int(r["site_id"]),
+                int(r["degree"]),
+                float(r["weighted_degree"]),
+                float(r["centrality"]),
+                float(r["clustering_coeff"]),
+            )
+            for _, r in graph_df.iterrows()
+        ],
+    )

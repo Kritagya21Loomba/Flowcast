@@ -48,7 +48,14 @@ def test_feature_shape(feature_db):
         "volume_lag_1", "volume_lag_7", "volume_lag_14", "volume_lag_28",
         "volume_rolling_mean_7", "volume_rolling_mean_28", "volume_rolling_std_7",
         "site_avg_volume", "cluster_id",
+        "cluster_mean_volume", "cluster_lag_1", "cluster_lag_7", "cluster_lag_14",
+        "top_neighbor_lag_1", "cluster_corridor_avg",
+        "rainfall_mm", "temperature_c", "wind_kmh", "severe_weather_flag",
+        "afl_games_count", "concerts_count", "cbd_events_count", "roadworks_flag", "school_zone_flag",
+        "graph_degree", "graph_centrality", "graph_clustering_coeff",
         "is_public_holiday", "is_school_holiday",
+        "is_day_before_public_holiday", "is_day_after_public_holiday",
+        "is_bridge_day", "is_term_start_week", "is_term_end_week",
     }
     assert expected_cols.issubset(set(df.columns))
 

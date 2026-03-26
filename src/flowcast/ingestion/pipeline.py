@@ -18,6 +18,7 @@ from flowcast.ingestion.load import get_ingestion_summary, load_csvs_to_duckdb
 from flowcast.transform.normalize import create_readings_view
 from flowcast.transform.sites import populate_signal_sites
 from flowcast.transform.aggregates import build_daily_aggregates
+from flowcast.ingestion.quality import impute_missing_days, detect_detector_health
 from flowcast.utils.logging import get_logger
 
 log = get_logger(__name__)
@@ -115,6 +116,9 @@ def run_pipeline(
         create_readings_view(con)
         populate_signal_sites(con)
         build_daily_aggregates(con)
+        imputed = impute_missing_days(con)
+        issues = detect_detector_health(con)
+        log.info("quality_checks_complete", imputed_days=imputed, detector_issues=issues)
         log.info("transforms_complete")
 
     # Step 6: Checkpoint and summarize
